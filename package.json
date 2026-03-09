@@ -5,6 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
+    "build:static": "next build",
+    "deploy:prepare": "npm run build:static",
     "start": "next start",
     "lint": "eslint"
   },

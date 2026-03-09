@@ -1,36 +1,43 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# cwcinc.dev
 
-## Getting Started
+Portfolio site built with Next.js and Tailwind CSS.
 
-First, run the development server:
+## Local development
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Production/static build
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+This project is configured for static export for S3 hosting.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+npm run build:static
+```
 
-## Learn More
+Build output is generated in `out/`.
 
-To learn more about Next.js, take a look at the following resources:
+## CI/CD to AWS (S3 + CloudFront)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+GitHub Actions workflow: `.github/workflows/deploy.yml`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+On push to `main`, the workflow:
+1. Installs dependencies
+2. Builds the static site
+3. Uploads `out/` to S3
+4. Invalidates CloudFront cache
 
-## Deploy on Vercel
+### Required GitHub repository secrets
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- `AWS_ACCESS_KEY_ID`
+- `AWS_SECRET_ACCESS_KEY`
+- `AWS_REGION`
+- `S3_BUCKET_NAME`
+- `CLOUDFRONT_DISTRIBUTION_ID`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Notes
+
+- S3 bucket should be configured for static website hosting (or served via CloudFront origin access).
+- CloudFront should point to your S3 origin and handle HTTPS.
