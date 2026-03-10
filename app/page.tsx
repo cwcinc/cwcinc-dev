@@ -46,7 +46,7 @@ function PageContent() {
     {
       title: "Portfolio Site",
       description: "My personal portfolio website, built with Next.js and Tailwind CSS.\nYou're looking at it now...",
-      image: "/projects/cwcincdev.png",
+      image: "/projects/cwcincdevdark.png",
       href: `/?depth=${depth + 1}`,
       livePreview: depth < MAX_DEPTH,
     },
