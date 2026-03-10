@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense, useState, useEffect, useMemo } from "react";
+import { Suspense, useState, useEffect } from "react";
 import { useSearchParams } from "next/navigation";
 import ProjectCard from "./components/ProjectCard";
 import PointCloud from "./components/PointCloud";
@@ -18,15 +18,16 @@ function PageContent() {
   const searchParams = useSearchParams();
   const depth = parseInt(searchParams.get("depth") ?? "0");
 
-  const { maxDepth, skipIntro } = useMemo(() => {
+  const [maxDepth, setMaxDepth] = useState(2);
+  const [skipIntro, setSkipIntro] = useState(false);
+
+  useEffect(() => {
     const cores = navigator.hardwareConcurrency ?? 4;
     const mem = (navigator as { deviceMemory?: number }).deviceMemory ?? 4;
     const isLow = cores <= 4 || mem <= 2;
     const isMid = !isLow && (cores < 8 || mem < 8);
-    return {
-      maxDepth: isLow ? 0 : isMid ? 1 : 2,
-      skipIntro: isLow,
-    };
+    setMaxDepth(isLow ? 0 : isMid ? 1 : 2);
+    setSkipIntro(isLow);
   }, []);
 
   const [isDark, setIsDark] = useState(true);

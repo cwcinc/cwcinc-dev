@@ -52,6 +52,7 @@ export default function ProjectCard({ title, description, image, href, livePrevi
   const linkHref = (() => {
     try {
       const url = new URL(href, "http://x");
+      if (url.origin !== "http://x") return href; // external URL, leave untouched
       url.searchParams.delete("depth");
       return url.pathname + url.search;
     } catch {
