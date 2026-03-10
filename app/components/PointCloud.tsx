@@ -29,7 +29,7 @@ const FADE_DISTANCE = 200;
 const MAX_INTRO_DELAY = 1000;
 const INTRO_SCALE_MIN = 0.1;
 
-export default function PointCloud({ isDark = true }: { isDark?: boolean }) {
+export default function PointCloud({ isDark = true, skipIntro = false }: { isDark?: boolean; skipIntro?: boolean }) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const mouse = useRef({ x: -9999, y: -9999 });
   const prevMouse = useRef({ x: -9999, y: -9999 });
@@ -118,7 +118,7 @@ export default function PointCloud({ isDark = true }: { isDark?: boolean }) {
           let startX = c * cellW;
           let startY = r * cellH;
 
-          if (!introPlayed) {
+          if (!introPlayed && !skipIntro) {
             // Proper avalanche hash for axis selection (independent of cellShade)
             let h = (c * 1664525 + r * 22695477 + 12345) | 0;
             h = Math.imul(h ^ (h >>> 16), 0x45d9f3b);
@@ -133,7 +133,7 @@ export default function PointCloud({ isDark = true }: { isDark?: boolean }) {
             }
           }
 
-          arr.push({ baseX: c * cellW, baseY: r * cellH, x: startX, y: startY, lockedAxis: null, shade, isAccent, isLight, intro: !introPlayed, introDelay: introPlayed ? 0 : Math.random() * MAX_INTRO_DELAY });
+          arr.push({ baseX: c * cellW, baseY: r * cellH, x: startX, y: startY, lockedAxis: null, shade, isAccent, isLight, intro: !introPlayed && !skipIntro, introDelay: (introPlayed || skipIntro) ? 0 : Math.random() * MAX_INTRO_DELAY });
         }
       }
       rects.current = arr;
