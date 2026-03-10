@@ -49,9 +49,19 @@ export default function ProjectCard({ title, description, image, href, livePrevi
     };
   }, [livePreview]);
 
+  const linkHref = (() => {
+    try {
+      const url = new URL(href, "http://x");
+      url.searchParams.delete("depth");
+      return url.pathname + url.search;
+    } catch {
+      return href;
+    }
+  })();
+
   return (
     <a
-      href={href}
+      href={linkHref}
       target="_blank"
       rel="noopener noreferrer"
       className={`group block rounded-xl overflow-hidden border transition-colors ${
