@@ -41,7 +41,7 @@ function PageContent() {
       description: "Ranked multiplayer mod for PolyTrack. Includes custom matchmaking, networking, signaling, and more.",
       image: "/projects/PolyRanked.png",
       href: "https://polyranked.cwcinc.dev/",
-      livePreview: depth === 0,
+      livePreview: false,
     },
     {
       title: "Portfolio Site",
